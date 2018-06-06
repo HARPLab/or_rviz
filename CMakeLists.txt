@@ -14,6 +14,8 @@ include_directories(SYSTEM
     ${catkin_INCLUDE_DIRS}
     ${OpenRAVE_INCLUDE_DIRS}
 )
+
+
 link_directories(
     ${catkin_LIBRARY_DIRS}
     ${OpenRAVE_LIBRARY_DIRS}
@@ -27,9 +29,17 @@ find_package(OGRE REQUIRED)
 include_directories(SYSTEM ${OGRE_INCLUDE_DIRS})
 link_directories(${OGRE_LIBRARY_DIRS})
 
-find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
+#find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
+find_package(Qt5Core REQUIRED)
+find_package(Qt5Gui REQUIRED)
+find_package(Qt5Widgets REQUIRED)
 add_definitions(-DQT_NO_KEYWORDS)
-include(${QT_USE_FILE})
+#include(${QT_USE_FILE})
+include_directories(
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Gui_INCLUDE_DIRS}
+    ${Qt5Widgets_INCLUDE_DIRS}
+)
 
 catkin_package(
     INCLUDE_DIRS include
@@ -68,7 +78,7 @@ target_link_libraries(${PROJECT_NAME}_markers
 )
 
 # RViz viewer plugins.
-qt4_wrap_cpp(RVIZ_MOC
+qt5_wrap_cpp(RVIZ_MOC
     include/${PROJECT_NAME}/rviz/EnvironmentDisplay.h
 )
 
@@ -78,7 +88,7 @@ add_library(${PROJECT_NAME}_rviz SHARED
 )
 
 # OpenRAVE viewer classes.
-qt4_wrap_cpp(VIEWER_MOC
+qt5_wrap_cpp(VIEWER_MOC
     include/${PROJECT_NAME}/RVizViewer.h
 )
 

@@ -38,9 +38,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef Q_MOC_RUN
     #include <boost/unordered_map.hpp>
     #include <boost/signals2.hpp>
-    #include <rviz/display.h>
     #include <openrave/openrave.h>
 #endif
+#include <rviz/display.h>
 #include <rviz/properties/enum_property.h>
 #include <rviz/properties/tf_frame_property.h>
 
