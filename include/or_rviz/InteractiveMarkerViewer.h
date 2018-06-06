@@ -31,16 +31,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *************************************************************************/
 #ifndef ORINTERACTIVEMARKER_H_
 #define ORINTERACTIVEMARKER_H_
-#include <boost/unordered_map.hpp>
-#include <boost/signals2.hpp>
 // workaround for qt moc bug w.r.t. BOOST_JOIN macro
 // see https://bugreports.qt.io/browse/QTBUG-22829
 #ifndef Q_MOC_RUN
+    #include <boost/unordered_map.hpp>
+    #include <boost/signals2.hpp>
     #include <openrave/openrave.h>
+    #include <interactive_markers/interactive_marker_server.h>
 #endif
-#include <interactive_markers/interactive_marker_server.h>
-#include "markers/KinBodyMarker.h"
 #include "util/InteractiveMarkerGraphHandle.h"
+#include "markers/KinBodyMarker.h"
 
 namespace or_rviz {
 

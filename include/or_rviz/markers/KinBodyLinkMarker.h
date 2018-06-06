@@ -31,7 +31,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *************************************************************************/
 #ifndef KINBODYLINKMARKER_H_
 #define KINBODYLINKMARKER_H_
-#include <interactive_markers/interactive_marker_server.h>
+
+#ifndef Q_MOC_RUN
+    #include <interactive_markers/interactive_marker_server.h>
+#endif // Q_MOC_RUN
 #include "LinkMarker.h"
 
 namespace or_rviz {
