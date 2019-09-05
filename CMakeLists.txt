@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
     openrave_catkin
     std_msgs
     visualization_msgs
+    OpenRAVE
 )
 include_directories(SYSTEM
     ${catkin_INCLUDE_DIRS}
@@ -29,12 +30,20 @@ find_package(OGRE REQUIRED)
 include_directories(SYSTEM ${OGRE_INCLUDE_DIRS})
 link_directories(${OGRE_LIBRARY_DIRS})
 
-#find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5Widgets REQUIRED)
+option(UseQt5 "UseQt5" OFF)
+if (UseQt5)
+  find_package(Qt5Widgets REQUIRED)
+  find_package(Qt5Core REQUIRED)
+  find_package(Qt5Gui REQUIRED)
+else()
+  find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
+  include(${QT_USE_FILE})
+endif()
+# #find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
+# find_package(Qt5Core REQUIRED)
+# find_package(Qt5Gui REQUIRED)
+# find_package(Qt5Widgets REQUIRED)
 add_definitions(-DQT_NO_KEYWORDS)
-#include(${QT_USE_FILE})
 include_directories(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
@@ -78,19 +87,37 @@ target_link_libraries(${PROJECT_NAME}_markers
 )
 
 # RViz viewer plugins.
-qt5_wrap_cpp(RVIZ_MOC
-    include/${PROJECT_NAME}/rviz/EnvironmentDisplay.h
-)
+if(UseQt5)
+    qt5_wrap_cpp(RVIZ_MOC
+        include/${PROJECT_NAME}/rviz/EnvironmentDisplay.h
+    )
+else()
+    qt4_wrap_cpp(RVIZ_MOC
+        include/${PROJECT_NAME}/rviz/EnvironmentDisplay.h
+    )
+endif()
 
 add_library(${PROJECT_NAME}_rviz SHARED
     src/rviz/EnvironmentDisplay.cpp
     ${RVIZ_MOC}
 )
 
-# OpenRAVE viewer classes.
-qt5_wrap_cpp(VIEWER_MOC
-    include/${PROJECT_NAME}/RVizViewer.h
+target_link_libraries(${PROJECT_NAME}_rviz
+    ${catkin_LIBRARIES}
+    ${OGRE_LIBRARIES}
+    ${QT_LIBRARIES}
 )
+
+# OpenRAVE viewer classes.
+if(UseQt5)
+    qt5_wrap_cpp(VIEWER_MOC
+        include/${PROJECT_NAME}/RVizViewer.h
+    )
+else()
+    qt4_wrap_cpp(VIEWER_MOC
+        include/${PROJECT_NAME}/RVizViewer.h
+    )
+endif()
 
 add_library(${PROJECT_NAME} SHARED
     src/InteractiveMarkerViewer.cpp
@@ -101,8 +128,6 @@ target_link_libraries(${PROJECT_NAME}
     ${PROJECT_NAME}_markers
     ${PROJECT_NAME}_rviz
     ${catkin_LIBRARIES}
-    ${OGRE_LIBRARIES}
-    ${QT_LIBRARIES}
 )
 
 # Stub library that registers the plugins with OpenRAVE.
