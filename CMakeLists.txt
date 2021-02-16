@@ -30,7 +30,7 @@ find_package(OGRE REQUIRED)
 include_directories(SYSTEM ${OGRE_INCLUDE_DIRS})
 link_directories(${OGRE_LIBRARY_DIRS})
 
-option(UseQt5 "UseQt5" OFF)
+option(UseQt5 "UseQt5" ON)
 if (UseQt5)
   find_package(Qt5Widgets REQUIRED)
   find_package(Qt5Core REQUIRED)
